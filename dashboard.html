@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ user.username }}!</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('view_stations') }}">Find Stations</a></li>
+                <li><a href="{{ url_for('my_reservations') }}">My Reservations</a></li>
+                <li><a href="{{ url_for('user_profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('vehicle_details') }}">Vehicles</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Your Dashboard</h2>
+        <p>Quick access to your charging activities.</p>
+        <div class="dashboard-links">
+            <a href="{{ url_for('view_stations') }}" class="button">Find a Charger</a>
+            <a href="{{ url_for('my_reservations') }}" class="button">View My Reservations</a>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
