@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charging Stations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Available Charging Stations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="station-list">
+            {% for station_id, station in stations.items() %}
+            <div class="station-card">
+                <h2>{{ station.name }}</h2>
+                <p><strong>Location:</strong> {{ station.location }}</p>
+                <p><strong>Available Ports:</strong> {{ station.available_ports }} / {{ station.total_ports }}</p>
+                <p><strong>Status:</strong> <span class="status-{{ station.status }}">{{ station.status.capitalize() }}</span></p>
+                <p><strong>Cost:</strong> ₹{{ "%.2f" % (station.cost_per_kwh * 83.5) }} per kWh (approx, conversion from $)</p>
+                <a href="{{ url_for('station_details', station_id=station_id) }}" class="button">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
