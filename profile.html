@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>My Profile</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('my_reservations') }}">My Reservations</a></li>
+                <li><a href="{{ url_for('vehicle_details') }}">My Vehicles</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form method="POST">
+            <h2>Personal Information</h2>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" value="{{ user.phone }}">
+
+            <h2>Charging Preferences</h2>
+            <label for="preferred_charging_speed">Preferred Charging Speed:</label>
+            <select id="preferred_charging_speed" name="preferred_charging_speed">
+                <option value="fast" {% if user.personalized_profile.get('preferred_charging_speed') == 'fast' %}selected{% endif %}>Fast</option>
+                <option value="standard" {% if user.personalized_profile.get('preferred_charging_speed') == 'standard' %}selected{% endif %}>Standard</option>
+            </select>
+
+            <label>
+                <input type="checkbox" name="notification_email" {% if user.personalized_profile.get('notification_email') %}checked{% endif %}> Receive email notifications
+            </label>
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
