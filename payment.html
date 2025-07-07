@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Process Payment for Reservation ID: {{ reservation.reservation_id[:8] }}...</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('my_reservations') }}">Back to Reservations</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <p>You are paying for a charging session at <strong>{{ charging_stations[reservation.station_id].name }}</strong>.</p>
+        <p>Estimated Amount: <strong>₹{{ "%.2f" % (estimated_amount * 83.5) }}</strong> (This is a placeholder. Actual amount will vary based on energy consumed).</p>
+
+        <div class="payment-form">
+            <h2>Payment Details</h2>
+            <form method="POST">
+                <label for="card_number">Card Number:</label>
+                <input type="text" id="card_number" name="card_number" placeholder="**** **** **** ****" disabled>
+                <label for="expiry">Expiry Date:</label>
+                <input type="text" id="expiry" name="expiry" placeholder="MM/YY" disabled>
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="***" disabled>
+                
+                <p class="info">Payment integration would typically use a secure third-party gateway like Stripe or Razorpay.</p>
+                <input type="hidden" name="amount" value="{{ estimated_amount }}">
+                <input type="hidden" name="payment_token" value="simulated_success_token_123">
+                <button type="submit" class="button">Simulate Payment (Click to Pay)</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
