@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Charging at {{ station.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Reserve Charging at {{ station.name }}</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('station_details', station_id=station_id) }}">Back to Station</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <p>You are about to reserve a port at <strong>{{ station.name }}</strong> ({{ station.location }}).</p>
+        <p>Currently available ports: {{ station.available_ports }}</p>
+        {% if station.available_ports > 0 %}
+            <form method="POST">
+                <p>By clicking "Confirm Reservation", you agree to reserve an available port immediately.</p>
+                <button type="submit" class="button">Confirm Reservation</button>
+            </form>
+        {% else %}
+            <p class="error">No ports are currently available for reservation at this station.</p>
+        {% endif %}
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
