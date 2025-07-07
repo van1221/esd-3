@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>My Charging Reservations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('view_stations') }}">Find Stations</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% if reservations %}
+            <div class="reservation-list">
+                {% for reservation in reservations %}
+                <div class="reservation-card">
+                    <h3>Reservation ID: {{ reservation.reservation_id[:8] }}...</h3>
+                    <p><strong>Station:</strong> {{ reservation.station_name }}</p>
+                    <p><strong>Port:</strong> {{ reservation.port_number }}</p>
+                    <p><strong>Start Time:</strong> {{ reservation.start_time }}</p>
+                    <p><strong>Status:</strong> <span class="status-{{ reservation.status }}">{{ reservation.status.capitalize() }}</span></p>
+                    {% if reservation.status == 'pending' %}
+                        <p>Waiting for charging to begin...</p>
+                        {% elif reservation.status == 'ongoing' %}
+                        <p>Charging in progress...</p>
+                    {% elif reservation.status == 'completed' %}
+                        <p>Charging session completed. View <a href="{{ url_for('payment_success', transaction_id=reservation.transaction_id if 'transaction_id' in reservation else '') }}">Payment Details</a></p>
+                    {% endif %}
+                    {% if reservation.status == 'pending' %}
+                        <a href="{{ url_for('process_payment', reservation_id=reservation.reservation_id) }}" class="button primary">Proceed to Payment</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You have no active reservations. <a href="{{ url_for('view_stations') }}">Find a station to reserve!</a></p>
+        {% endif %}
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
