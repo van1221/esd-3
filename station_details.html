@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ station.name }} Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ station.name }}</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('view_stations') }}">Back to Stations</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="station-detail-card">
+            <p><strong>Location:</strong> {{ station.location }}</p>
+            <p><strong>Total Ports:</strong> {{ station.total_ports }}</p>
+            <p><strong>Available Ports:</strong> {{ station.available_ports }}</p>
+            <p><strong>Cost per kWh:</strong> ₹{{ "%.2f" % (station.cost_per_kwh * 83.5) }} (approx)</p>
+            <p><strong>Status:</strong> <span class="status-{{ station.status }}">{{ station.status.capitalize() }}</span></p>
+            {% if station.available_ports > 0 %}
+                <a href="{{ url_for('reserve_charging', station_id=station_id) }}" class="button">Reserve Now</a>
+            {% else %}
+                <p class="error">No ports available at this station.</p>
+            {% endif %}
+        </div>
+        <div class="map-placeholder">
+            <p>Map showing {{ station.location }} goes here.</p>
+            </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 EV Charging Network</p>
+    </footer>
+</body>
+</html>
